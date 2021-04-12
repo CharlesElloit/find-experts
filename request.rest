@@ -1,0 +1,44 @@
+$token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDZjYmM4ZDlkNWQ2ZTA0MWNiM2FjN2MiLCJlbWFpbCI6InNhbXVlbC53aWxsc29uQGdtYWlsLmNvbSIsIm5hbWUiOiJTYW11ZWwgV2lsbHNvbiIsImlhdCI6MTYxNzc0MDI5OH0.fewp0R-bCMM4Bc2lp0NbJy2DjD_LFlzCDrWe3pZzjng
+###
+POST http://localhost:14000/register
+Content-Type: application/json
+
+{
+  "name": "Jordan H",
+  "email": "jordan.h@gmail.com",
+  "password": "123456"
+}
+
+###
+POST http://localhost:14000/login
+Content-Type: application/json
+
+{
+  "email": "charles.jordan@gmail.COM",
+  "password": "123456"
+}
+
+###
+POST http://localhost:14000/contractors
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDZkNzE1ODJmMTk5OTFiMWMzNGQ2MDkiLCJlbWFpbCI6ImNoYXJsZXMuam9yZGFuQGdtYWlsLmNvbSIsIm5hbWUiOiJDaGFybGVzIEpvcmRhbiIsImlhdCI6MTYxNzc4NTIwMn0.rJCEalAiwSpZQFtS3LleyOgg-dOAOdKWFUBLvMS-_qU
+
+{
+  "occupation": "IT Expert",
+  "cellPhone": "0793493943",
+  "location": {
+    "type" : "Point",
+    "coordinates": [
+      -2893.902983,
+      2393.82928321
+    ],
+    "address": "Luggage"
+  },
+  "status": "Available",
+  "price": 500000,
+  "bio": "This is a litte bio about me."
+}
+
+###
+GET http://localhost:14000/contractor/606d71582f19991b1c34d609
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MDZjZDFiYzhkNDhjMTAyYzRmZmRmM2IiLCJlbWFpbCI6InNhbXVlbC53aWxsc29uQGdtYWlsLmNvbSIsIm5hbWUiOiJTYW11ZWwgV2lsbHNvbiIsImlhdCI6MTYxNzc4Mzg0NH0.h0dNIXa6Egqzz-mED2uKB4Ls7mQK2LQQJ0lliNXWnyw

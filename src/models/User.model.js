@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
@@ -18,17 +19,13 @@ const userSchema = new Schema({
   timestamps: true,
 });
 
-// eslint-disable-next-line func-names
-userSchema.methods.generateAuthToken = function () {
+userSchema.statics.generateAuthToken = function () {
   const payload = {
     userId: this._id,
     email: this.email,
     name: this.name,
   };
-
-  const token = jwt.sign(payload, process.env.SECRET_KEY);
-
-  return token;
+  return jwt.sign(payload, process.env.SECRET_KEY);
 };
 
 module.exports = model("User", userSchema);

@@ -15,4 +15,10 @@ router.post("/login", catchErrorsHandler(userController.login));
 router.post("/contractors", auth, catchErrorsHandler(contractorController.createContractor));
 router.get("/contractor/:contractorId", auth, catchErrorsHandler(contractorController.getContractor));
 
+// rating routes
+router.post("/ratings/:userId", auth, catchErrorsHandler(ratingController.createRating));
+
+// service
+router.post("/services", auth, catchErrorsHandler(serviceController.createService));
+
 module.exports = router;

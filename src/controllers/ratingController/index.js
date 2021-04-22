@@ -1,3 +1,3 @@
 module.exports = {
-  createRate: require("./createRating"),
+  createRating: require("./createRating"),
 };

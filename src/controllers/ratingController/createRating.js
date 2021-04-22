@@ -1,7 +1,14 @@
+const Joi = require("joi");
 const collection = require("../../models");
-const { RatingValidate } = require("../../models/Rating.model");
 
-const createRate = async (req, res) => {
+const RatingValidate = (data) => {
+  const schema = Joi.object({
+    rating: Joi.number().required().min(0).max(5),
+  });
+  return schema.validate(data);
+};
+
+const createRating = async (req, res) => {
   const { error } = RatingValidate(req.body);
 
   if (error) {
@@ -10,26 +17,48 @@ const createRate = async (req, res) => {
     });
   }
 
-  // TODO: get employerId
-  // TODO: get serviceId
-
-  const { rating, comment } = req.body;
-
   const ratingData = collection.Rating({
-    rating,
-    comment,
+    userId: req.params.userId,
+    rating: req.body.rating,
+    created: {
+      created_by: req.user.userId,
+    },
   });
 
-  const createdRating = await collection.Rating.create(ratingData);
+  const userRatings = await collection.Rating.find({})
+    .where("userId").equals(req.params.userId);
 
-  if (!createdRating) {
-    return res.status(500).json({
-      error: "Can't save the rating data please try again.",
+  if (userRatings.length > 0) {
+    userRatings.forEach(async (rating) => {
+      if (JSON.stringify(rating.created.created_by) === JSON.stringify(req.user.userId)) {
+        return res.status(400).json({
+          error: "You can only give rating once.",
+        });
+      }
+      const createdRating = await collection.Rating.create(ratingData);
+
+      if (!createdRating) {
+        return res.status(500).json({
+          error: "Can't save the rating data please try again.",
+        });
+      }
+      res.status(201).json({
+        message: "Rating created Successfully",
+        ratingID: createdRating._id,
+      });
+    });
+  } else {
+    const createdRating = await collection.Rating.create(ratingData);
+    if (!createdRating) {
+      return res.status(500).json({
+        error: "Can't save the rating data please try again.",
+      });
+    }
+    res.status(201).json({
+      message: "Rating created Successfully",
+      ratingID: createdRating._id,
     });
   }
-
-  res.status(201).json({
-    message: "Rating created Successfully",
-    ratingID: createdRating._id,
-  });
 };
+
+module.exports = createRating;

@@ -1,14 +1,26 @@
+const Joi = require("joi");
 const collection = require("../../models");
-// const { contractorValidator } = require("../../models/Contractor.model");
+
+const contractorValidator = (data) => {
+  const schema = Joi.object({
+    occupation: Joi.string().required().trim().strip(),
+    cellPhone: Joi.string().required().trim().strip(),
+    status: Joi.string().required().trim().strip(),
+    price: Joi.number().required(),
+    bio: Joi.string().required().trim().strip(),
+  });
+
+  return schema.validate(data);
+};
 
 const createContractor = async (req, res) => {
   // validation
-  // const { error } = contractorValidator(req.body);
-  // if (error) {
-  //   return res.status(400).json({
-  //     error: error.details[0].message,
-  //   });
-  // }
+  const { error } = contractorValidator(req.body);
+  if (error) {
+    return res.status(400).json({
+      error: error.details[0].message,
+    });
+  }
 
   const { userId } = req.headers;
 

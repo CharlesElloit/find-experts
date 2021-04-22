@@ -48,11 +48,7 @@ const login = async (req, res) => {
     });
   }
 
-  // This function is defind in user model
-  // const token = collection.User.generateAuthToken();
-
-  const payload = { userId: userInfo._id, email: userInfo.email };
-  const token = await jwt.sign(payload, process.env.SECRET_KEY);
+  const token = collection.User.generateAuthToken();
 
   res.status(200).json({ token });
 

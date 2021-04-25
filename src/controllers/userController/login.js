@@ -3,6 +3,38 @@ const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const collection = require("../../models");
 
+const refreshTokens = [];
+
+exports.refreshAccessToken = async (req, res, _next) => {
+  const refreshToken = req.body.token;
+  if (!refreshToken || !refreshTokens.includes(refreshToken)) {
+    return res.status(403).json({
+      message: "Refresh access token not found, please login again!",
+    });
+  }
+  // if the refresh token is valid the we gonna create new accessToken.
+  const validRefreshToken = await jwt.verify(refreshToken, process.env.SECRET_KEY);
+  if (!validRefreshToken) {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid refresh token",
+    });
+  }
+
+  const payload = {
+    userId: validRefreshToken.userId,
+    name: validRefreshToken.name,
+    email: validRefreshToken.email,
+  };
+
+  const accessToken = await jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "20s" });
+
+  return res.status(200).json({
+    success: true,
+    accessToken,
+  });
+};
+
 function validateUserloginData(data) {
   const schema = Joi.object({
     email: Joi.string().max(255)
@@ -48,11 +80,14 @@ const login = async (req, res) => {
     });
   }
 
-  const token = collection.User.generateAuthToken();
+  const accessToken = collection.User.generateAccessToken();
+  const refreshToken = collection.User.generateRefreshToken();
 
-  res.status(200).json({ token });
+  refreshTokens.push(refreshToken);
 
-  req.headers.authorization = token;
+  res.status(200).json({ accessToken, refreshToken });
+
+  // req.headers.authorization = token;
 };
 
 module.exports = login;

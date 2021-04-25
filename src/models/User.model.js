@@ -19,13 +19,22 @@ const userSchema = new Schema({
   timestamps: true,
 });
 
-userSchema.statics.generateAuthToken = function () {
+userSchema.statics.generateAccessToken = function () {
   const payload = {
     userId: this._id,
     email: this.email,
     name: this.name,
   };
-  return jwt.sign(payload, process.env.SECRET_KEY);
+  return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "2s" });
+};
+
+userSchema.statics.generateRefreshToken = function () {
+  const payload = {
+    userId: this._id,
+    email: this.email,
+    name: this.name,
+  };
+  return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "7d" });
 };
 
 module.exports = model("User", userSchema);

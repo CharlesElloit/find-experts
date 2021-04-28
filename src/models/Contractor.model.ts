@@ -1,8 +1,8 @@
 import Joi from "joi";
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import IContractor from "../interfaces/contractor-interface";
 
-// google how to validate an object using joi.
-export const contractorValidator = (data: object) => {
+export const contractorValidator = (data: object): object => {
   const schema = Joi.object({
     occupation: Joi.string().required().trim().strip(),
     cellphone: Joi.string().trim().required().strip(),
@@ -15,9 +15,7 @@ export const contractorValidator = (data: object) => {
   return schema.validate(data);
 };
 
-const { Schema, model } = mongoose;
-
-const contractorSchema = new Schema(
+const contractorSchema: Schema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -55,4 +53,4 @@ const contractorSchema = new Schema(
   },
 );
 
-export default model("Contractor", contractorSchema);
+export default mongoose.model<IContractor>("Contractor", contractorSchema);

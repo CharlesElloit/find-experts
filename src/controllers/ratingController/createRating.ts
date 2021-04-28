@@ -2,14 +2,14 @@ import Joi from "joi";
 import collection from "../../models";
 import { Request, Response } from "express";
 
-const RatingValidate = (data) => {
+const RatingValidate = (data: object): object => {
   const schema = Joi.object({
     rating: Joi.number().required().min(0).max(5),
   });
   return schema.validate(data);
 };
 
-const createRating = async (req: Request, res: Response): Promise<T> => {
+const createRating = async (req: Request, res: Response): Promise<Response> => {
   const { error } = RatingValidate(req.body);
   if (error) {
     return res.status(400).json({

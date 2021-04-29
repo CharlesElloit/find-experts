@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import collection from "../../models";
 import { Request, Response } from "express";
 
-const register = async (req: Request, res: Response): Promise<T> => {
+const register = async (req: Request, res: Response): Promise<any> => {
   // validation
   // check if email exist
   const isUserExist = await collection.User.findOne({ email: req.body.email });
@@ -13,12 +13,13 @@ const register = async (req: Request, res: Response): Promise<T> => {
   }
   // encrypt the password
   const salt = 12;
-  const encryptedPassword = await bcrypt.hashSync(req.body.password, salt);
+  const encryptedPassword = await bcrypt.hash(req.body.password, salt);
   if (!encryptedPassword) {
     return res.status(500).json({
       passwordError: "something went wrong please try again.",
     });
   }
+
   // create new user
   const newUser = new collection.User({
     name: req.body.name,

@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 
-const dbconnection = async (url: string): Promise<T> => {
+const dbconnection = async (url: any) => {
   try {
     const conn = await connect(url, {
       useNewUrlParser: true,

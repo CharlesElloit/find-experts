@@ -7,7 +7,7 @@
     "start": "node ./dist/index.js",
     "dev": "nodemon ./dist/index.js",
     "dev-ts": "yarn run watch-ts",
-    "build": "rm -rf dist/ && prettier --write dist/ && tsc",
+    "build": "rm -rf dist/ && prettier --write ./dist && tsc",
     "watch-ts": "tsc -w",
     "test": "jest",
     "lint": "eslint ."
@@ -16,6 +16,7 @@
     "node",
     "backend"
   ],
+  "type": "module",
   "author": "Charles Elloit",
   "license": "ISC",
   "dependencies": {
